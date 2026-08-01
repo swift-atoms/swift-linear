@@ -291,7 +291,7 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
 // MARK: - 2×2 Factory Methods
 
 extension Linear.Matrix
-where Rows == 2, Columns == 2, Scalar: FloatingPoint & ExpressibleByIntegerLiteral {
+where Rows == 2, Columns == 2, Scalar: FloatingPoint {
     /// Creates a uniform scaling matrix.
     @inlinable
     public static func scale(_ factor: Scale<1, Scalar>) -> Self {
@@ -314,7 +314,7 @@ where Rows == 2, Columns == 2, Scalar: FloatingPoint & ExpressibleByIntegerLiter
 // MARK: - 2×2 Rotation Factory (cos/sin)
 
 extension Linear.Matrix
-where Rows == 2, Columns == 2, Scalar: SignedNumeric & ExpressibleByIntegerLiteral {
+where Rows == 2, Columns == 2, Scalar: SignedNumeric {
     /// Creates a rotation matrix from cosine and sine values.
     @inlinable
     public static func rotation(cos: Scalar, sin: Scalar) -> Self {

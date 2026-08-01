@@ -49,7 +49,7 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
 
 // MARK: - Matrix-Vector Multiplication
 
-extension Linear.Matrix where Scalar: AdditiveArithmetic & Swift.Numeric {
+extension Linear.Matrix where Scalar: Swift.Numeric {
     /// Multiplies the matrix by a column vector.
     @inlinable
     public static func * (lhs: borrowing Self, rhs: Linear.Vector<Columns>) -> Linear.Vector<Rows> {
@@ -67,7 +67,7 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic & Swift.Numeric {
 
 // MARK: - Matrix-Matrix Multiplication
 
-extension Linear.Matrix where Scalar: AdditiveArithmetic & Swift.Numeric {
+extension Linear.Matrix where Scalar: Swift.Numeric {
     /// Multiplies this matrix by another matrix.
     @inlinable
     public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P> {
