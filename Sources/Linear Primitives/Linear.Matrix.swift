@@ -259,9 +259,6 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
             case a, b, c, d
         }
 
-        // reason: signature forced by external protocol Swift.Decodable —
-        // init(from:) requires untyped throws and an existential decoder.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Decodes a 2×2 matrix from its keyed elements.
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -271,11 +268,7 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
             let d = try container.decode(Scalar.self, forKey: .d)
             self.init(a: a, b: b, c: c, d: d)
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
 
-        // reason: signature forced by external protocol Swift.Encodable —
-        // encode(to:) requires untyped throws and an existential encoder.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Encodes this 2×2 matrix as its keyed elements.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -284,7 +277,6 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
             try container.encode(c, forKey: .c)
             try container.encode(d, forKey: .d)
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 
