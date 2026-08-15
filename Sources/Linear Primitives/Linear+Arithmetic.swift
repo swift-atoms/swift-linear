@@ -70,7 +70,8 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
 extension Linear.Matrix where Scalar: Swift.Numeric {
     /// Multiplies this matrix by another matrix.
     @inlinable
-    public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P> {
+    public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P>
+    {
         var result = InlineArray<Rows, InlineArray<P, Scalar>>(
             repeating: InlineArray(repeating: .zero)
         )

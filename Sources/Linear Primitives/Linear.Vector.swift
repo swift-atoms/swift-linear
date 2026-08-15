@@ -80,9 +80,6 @@ extension Linear {
 
 #if !hasFeature(Embedded)
     extension Linear.Vector: Codable where Scalar: Codable {
-        // reason: signature forced by external protocol Swift.Decodable —
-        // init(from:) requires untyped throws and an existential decoder.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Decodes a vector from an unkeyed sequence of components.
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
@@ -92,11 +89,7 @@ extension Linear {
             }
             self.init(components)
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
 
-        // reason: signature forced by external protocol Swift.Encodable —
-        // encode(to:) requires untyped throws and an existential encoder.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Encodes this vector as an unkeyed sequence of components.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.unkeyedContainer()
@@ -104,7 +97,6 @@ extension Linear {
                 try container.encode(components[i])
             }
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 
@@ -432,7 +424,9 @@ extension Linear.Vector where N == 4 {
     /// Creates a 4D vector from a 3D vector by adding a W-component.
     @inlinable
     public init(_ vector3: Linear.Vector<3>, dw: Linear.Dw) {
-        self.init([vector3.dx.underlying, vector3.dy.underlying, vector3.dz.underlying, dw.underlying])
+        self.init([
+            vector3.dx.underlying, vector3.dy.underlying, vector3.dz.underlying, dw.underlying,
+        ])
     }
 }
 
