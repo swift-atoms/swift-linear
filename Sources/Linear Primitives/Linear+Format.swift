@@ -3,7 +3,7 @@
 
 public import Dimension_Primitives
 public import Format_Primitives
-public import Formatter_Primitives
+import Formatter_Primitives
 
 // MARK: - Tagged + formatted()
 
