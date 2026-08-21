@@ -1,14 +1,5 @@
-//
-//  Linear+Arithmetic.swift
-//  swift-linear-primitives
-//
-//  Created by Coen ten Thije Boonkkamp on 14/12/2025.
-//
 public import Dimension_Primitives
 
-// MARK: - Vector × Scale (Uniform Scaling)
-
-/// Scales a vector uniformly by a dimensionless scale factor.
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Linear<Scalar, Space>.Vector<N>,
@@ -21,7 +12,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     return Linear<Scalar, Space>.Vector<N>(result)
 }
 
-/// Scales a vector uniformly by a dimensionless scale factor (commutative).
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Scale<1, Scalar>,
@@ -34,7 +24,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     return Linear<Scalar, Space>.Vector<N>(result)
 }
 
-/// Divides a vector uniformly by a dimensionless scale factor.
 @inlinable
 public func / <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Linear<Scalar, Space>.Vector<N>,
@@ -47,10 +36,8 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     return Linear<Scalar, Space>.Vector<N>(result)
 }
 
-// MARK: - Matrix-Vector Multiplication
-
 extension Linear.Matrix where Scalar: Swift.Numeric {
-    /// Multiplies the matrix by a column vector.
+
     @inlinable
     public static func * (lhs: borrowing Self, rhs: Linear.Vector<Columns>) -> Linear.Vector<Rows> {
         var result = InlineArray<Rows, Scalar>(repeating: .zero)
@@ -65,10 +52,8 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
     }
 }
 
-// MARK: - Matrix-Matrix Multiplication
-
 extension Linear.Matrix where Scalar: Swift.Numeric {
-    /// Multiplies this matrix by another matrix.
+
     @inlinable
     public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P>
     {
@@ -87,7 +72,6 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
         return Linear.Matrix<Rows, P>(rows: result)
     }
 
-    /// Multiplies two matrices.
     @inlinable
     public static func * <let P: Int>(
         lhs: Self,
@@ -97,30 +81,8 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
     }
 }
 
-// MARK: - Scalar Multiplication (Intentionally Omitted)
-
-// Note: Raw scalar multiplication (Matrix * Scalar) is intentionally not provided.
-//
-// This codebase maintains type safety by using typed wrappers like Scale<1, Scalar>
-// instead of raw scalars for scaling operations. This ensures:
-//
-// 1. Dimensional correctness: Scale factors are explicitly typed, preventing
-//    accidental mixing of dimensioned quantities with dimensionless scalars.
-//
-// 2. Consistency with vectors: Linear.Vector also restricts scalar multiplication
-//    to internal use, exposing only typed scaling via Scale<1, Scalar>.
-//
-// 3. Semantic clarity: To scale a transformation matrix, compose it with a
-//    scale matrix via Matrix.scale(_:) rather than element-wise multiplication.
-//
-// If you need element-wise scalar multiplication for numerical computation,
-// use the map(_:) method: matrix.map { $0 * scalar }
-
 extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
-    /// Multiplies the 2×2 matrix by a typed 2D vector, preserving coordinate types.
-    ///
-    /// This operator handles the dimensional analysis internally, allowing matrix elements
-    /// (which are dimensionless) to transform typed displacement components.
+
     @inlinable
     public static func * (
         lhs: Self,
@@ -132,10 +94,8 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Scalar Multiplication (internal for mathematical operations)
-
 extension Linear.Vector where Scalar: FloatingPoint {
-    /// Scales the vector by a scalar multiplier (internal).
+
     @inlinable
     package static func * (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
@@ -145,7 +105,6 @@ extension Linear.Vector where Scalar: FloatingPoint {
         return Self(result)
     }
 
-    /// Divides the vector by a scalar divisor (internal).
     @inlinable
     package static func / (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
@@ -156,10 +115,8 @@ extension Linear.Vector where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Negation
-
 extension Linear.Matrix where Scalar: SignedNumeric {
-    /// Negates the matrix (flips all element signs).
+
     @inlinable
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.rows
@@ -172,10 +129,8 @@ extension Linear.Matrix where Scalar: SignedNumeric {
     }
 }
 
-// MARK: - Addition / Subtraction
-
 extension Linear.Matrix where Scalar: AdditiveArithmetic {
-    /// Adds two matrices element-wise.
+
     @inlinable
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
@@ -187,7 +142,6 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
         return Self(rows: result)
     }
 
-    /// Subtracts two matrices element-wise.
     @inlinable
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
@@ -200,10 +154,8 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     }
 }
 
-// MARK: - Negation (SignedNumeric)
-
 extension Linear.Vector where Scalar: SignedNumeric {
-    /// Negates the vector (flips direction).
+
     @inlinable
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {
@@ -215,10 +167,8 @@ extension Linear.Vector where Scalar: SignedNumeric {
     }
 }
 
-// MARK: - AdditiveArithmetic
-
 extension Linear.Vector where Scalar: AdditiveArithmetic {
-    /// Adds two vectors component-wise.
+
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -229,7 +179,6 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
         return Self(result)
     }
 
-    /// Subtracts two vectors component-wise.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -241,14 +190,6 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
     }
 }
 
-// MARK: - Dot Product
-
-/// Computes the dot product of two vectors.
-///
-/// The dot product is the sum of component-wise products, returning a scalar.
-/// Geometrically, it equals |a| × |b| × cos(θ) where θ is the angle between vectors.
-///
-/// - Returns: The scalar dot product.
 @inlinable
 public func dot<Scalar: Swift.Numeric, Space, let N: Int>(
     _ lhs: Linear<Scalar, Space>.Vector<N>,
@@ -261,7 +202,6 @@ public func dot<Scalar: Swift.Numeric, Space, let N: Int>(
     return sum
 }
 
-/// Computes the dot product of two 2D vectors using typed components.
 @inlinable
 public func dot<Scalar: Swift.Numeric, Space>(
     _ lhs: Linear<Scalar, Space>.Vector<2>,
@@ -270,15 +210,6 @@ public func dot<Scalar: Swift.Numeric, Space>(
     lhs.dx.underlying * rhs.dx.underlying + lhs.dy.underlying * rhs.dy.underlying
 }
 
-// MARK: - Cross Product (2D)
-
-/// Computes the 2D cross product (perpendicular dot product).
-///
-/// For 2D vectors, the cross product returns a scalar representing the
-/// signed area of the parallelogram formed by the two vectors.
-/// Positive if rhs is counterclockwise from lhs, negative if clockwise.
-///
-/// - Returns: The signed scalar area.
 @inlinable
 public func cross<Scalar: Swift.Numeric, Space>(
     _ lhs: Linear<Scalar, Space>.Vector<2>,
