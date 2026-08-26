@@ -1,6 +1,6 @@
-public import Dimension_Primitives
-public import Format_Primitives
-import Formatter_Primitives
+public import Dimension
+public import Format
+import Formatter
 
 extension Tagged where Underlying: BinaryFloatingPoint {
 

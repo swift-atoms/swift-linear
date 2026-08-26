@@ -1,4 +1,4 @@
-# Linear Primitives
+# Linear
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -10,7 +10,7 @@ Add the dependency to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-linear-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-linear.git", branch: "main")
 ]
 ```
 
@@ -22,7 +22,7 @@ Add the product to your target:
 .target(
     name: "YourTarget",
     dependencies: [
-        .product(name: "Linear Primitives", package: "swift-linear-primitives")
+        .product(name: "Linear", package: "swift-linear")
     ]
 )
 ```
