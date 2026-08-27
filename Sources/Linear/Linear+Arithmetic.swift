@@ -1,4 +1,5 @@
 public import Dimension
+public import Tagged
 
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(

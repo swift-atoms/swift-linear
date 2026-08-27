@@ -1,5 +1,7 @@
 import Testing
 
+import Tagged
+
 @testable import Linear
 
 @Suite
@@ -101,10 +103,10 @@ struct `Linear.Matrix Tests` {
     @Test
     func `Matrix-vector multiplication`() {
         let m = Mat2x2(a: 1, b: 2, c: 3, d: 4)
-        let v = Vec2(dx: 1, dy: 1)
+        let v = Vec2(dx: .init(_unchecked: 1), dy: .init(_unchecked: 1))
         let result = m * v
-        #expect(result.dx == 3)
-        #expect(result.dy == 7)
+        #expect(result.dx.underlying == 3)
+        #expect(result.dy.underlying == 7)
     }
 
     @Test
