@@ -23,19 +23,15 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-dimension.git",
+            url: "https://github.com/swift-atoms/swift-dimension.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-format.git",
+            url: "https://github.com/swift-atoms/swift-numeric.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-numeric.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-tagged.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
     ],
@@ -44,14 +40,13 @@ let package = Package(
             name: "Linear",
             dependencies: [
                 .product(name: "Dimension", package: "swift-dimension"),
-                .product(name: "Format", package: "swift-format"),
                 .product(name: "Real", package: "swift-numeric"),
             ]
         ),
         .target(
             name: "Linear Test Support",
             dependencies: [
-                "Linear",
+                .target(name: "Linear"),
                 .product(
                     name: "Tagged Test Support",
                     package: "swift-tagged"
@@ -62,12 +57,12 @@ let package = Package(
         .testTarget(
             name: "Linear Tests",
             dependencies: [
-                "Linear",
+                .target(name: "Linear"),
                 .product(
                     name: "Tagged Standard Library Integration",
                     package: "swift-tagged"
                 ),
-                "Linear Test Support",
+                .target(name: "Linear Test Support"),
             ]
         ),
     ],

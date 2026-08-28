@@ -2,7 +2,7 @@
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
-Linear algebra primitives — composes dimension, format, and numeric primitives to express linear-algebraic structure.
+Linear algebra types built from dimension and numeric concepts. Formatter behavior for tagged values is provided separately by `swift-tagged-formatter`.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Add the dependency to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-linear.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-linear.git", branch: "main")
 ]
 ```
 
