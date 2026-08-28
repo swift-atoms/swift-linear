@@ -17,25 +17,25 @@ let package = Package(
             targets: ["Linear"]
         ),
         .library(
-            name: "Linear Standard Library Integration",
-            targets: ["Linear Standard Library Integration"]
-        ),
-        .library(
-            name: "Linear Apple Foundation Integration",
-            targets: ["Linear Apple Foundation Integration"]
+            name: "Linear Test Support",
+            targets: ["Linear Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-atoms/swift-dimension.git",
+            url: "https://github.com/swift-molecules/swift-dimension.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-tagged.git",
+            url: "https://github.com/swift-molecules/swift-format.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-numeric.git",
+            url: "https://github.com/swift-molecules/swift-numeric.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-tagged.git",
             branch: "main"
         ),
     ],
@@ -44,28 +44,31 @@ let package = Package(
             name: "Linear",
             dependencies: [
                 .product(name: "Dimension", package: "swift-dimension"),
-                .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Numeric", package: "swift-numeric"),
-                .product(
-                    name: "Numeric Standard Library Integration",
-                    package: "swift-numeric"
-                ),
+                .product(name: "Format", package: "swift-format"),
+                .product(name: "Real", package: "swift-numeric"),
             ]
         ),
         .target(
-            name: "Linear Standard Library Integration",
-            dependencies: ["Linear"]
-        ),
-        .target(
-            name: "Linear Apple Foundation Integration",
+            name: "Linear Test Support",
             dependencies: [
                 "Linear",
-                "Linear Standard Library Integration",
-            ]
+                .product(
+                    name: "Tagged Test Support",
+                    package: "swift-tagged"
+                ),
+            ],
+            path: "Tests/Support"
         ),
         .testTarget(
             name: "Linear Tests",
-            dependencies: ["Linear"]
+            dependencies: [
+                "Linear",
+                .product(
+                    name: "Tagged Standard Library Integration",
+                    package: "swift-tagged"
+                ),
+                "Linear Test Support",
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

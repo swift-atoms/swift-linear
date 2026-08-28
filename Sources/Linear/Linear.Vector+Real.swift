@@ -1,6 +1,5 @@
 public import Dimension
-public import Numeric
-public import Tagged
+internal import Real
 
 extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Numeric.Transcendental {
 

@@ -1,4 +1,5 @@
 public import Dimension
+public import Real
 
 extension Linear {
 
@@ -203,6 +204,31 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
     }
 }
 
+#if !hasFeature(Embedded)
+    extension Linear.Matrix: Codable where Rows == 2, Columns == 2, Scalar: Codable {
+        private enum CodingKeys: String, CodingKey {
+            case a, b, c, d
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let a = try container.decode(Scalar.self, forKey: .a)
+            let b = try container.decode(Scalar.self, forKey: .b)
+            let c = try container.decode(Scalar.self, forKey: .c)
+            let d = try container.decode(Scalar.self, forKey: .d)
+            self.init(a: a, b: b, c: c, d: d)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(a, forKey: .a)
+            try container.encode(b, forKey: .b)
+            try container.encode(c, forKey: .c)
+            try container.encode(d, forKey: .d)
+        }
+    }
+#endif
+
 extension Linear.Matrix
 where Rows == 2, Columns == 2, Scalar: FloatingPoint {
 
@@ -228,6 +254,45 @@ where Rows == 2, Columns == 2, Scalar: SignedNumeric {
     @inlinable
     public static func rotation(cos: Scalar, sin: Scalar) -> Self {
         Self(a: cos, b: -sin, c: sin, d: cos)
+    }
+}
+
+extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
+
+    @inlinable
+    public static func rotation(_ angle: Radian<Scalar>) -> Self {
+        rotation(cos: angle.cos.value, sin: angle.sin.value)
+    }
+
+    @inlinable
+    public static func rotation(_ angle: Degree<Scalar>) -> Self {
+        rotation(angle.radians)
+    }
+}
+
+extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Float {
+
+    @inlinable
+    public static func rotation(_ angle: Radian<Scalar>) -> Self {
+        rotation(cos: angle.cos.value, sin: angle.sin.value)
+    }
+
+    @inlinable
+    public static func rotation(_ angle: Degree<Scalar>) -> Self {
+        rotation(angle.radians)
+    }
+}
+
+extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
+
+    @inlinable
+    public static func rotationAngle(_ matrix: Self) -> Dimension.Radian<Scalar> {
+        Radian(_unchecked: Scalar.math.atan2(matrix.c, matrix.a))
+    }
+
+    @inlinable
+    public var rotationAngle: Dimension.Radian<Scalar> {
+        Self.rotationAngle(self)
     }
 }
 
