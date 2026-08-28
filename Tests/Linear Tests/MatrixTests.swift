@@ -1,7 +1,7 @@
-import Tagged_Primitives_Standard_Library_Integration
+import Tagged_Standard_Library_Integration
 import Testing
 
-@testable import Linear_Primitives
+@testable import Linear
 
 @Suite
 struct `Linear.Matrix Tests` {

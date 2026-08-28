@@ -1,5 +1,5 @@
-public import Dimension_Primitives
-public import Real_Primitives
+public import Dimension
+public import Real
 
 extension Linear {
 
@@ -286,12 +286,12 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Float {
 extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
 
     @inlinable
-    public static func rotationAngle(_ matrix: Self) -> Dimension_Primitives.Radian<Scalar> {
+    public static func rotationAngle(_ matrix: Self) -> Dimension.Radian<Scalar> {
         Radian(_unchecked: Scalar.math.atan2(matrix.c, matrix.a))
     }
 
     @inlinable
-    public var rotationAngle: Dimension_Primitives.Radian<Scalar> {
+    public var rotationAngle: Dimension.Radian<Scalar> {
         Self.rotationAngle(self)
     }
 }

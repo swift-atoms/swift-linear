@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-linear-primitives",
+    name: "swift-linear",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,61 +13,56 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Linear Primitives",
-            targets: ["Linear Primitives"]
+            name: "Linear",
+            targets: ["Linear"]
         ),
         .library(
-            name: "Linear Primitives Test Support",
-            targets: ["Linear Primitives Test Support"]
+            name: "Linear Test Support",
+            targets: ["Linear Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-dimension-primitives.git",
+            url: "https://github.com/swift-atoms/swift-dimension.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-format-primitives.git",
+            url: "https://github.com/swift-atoms/swift-numeric.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-numeric-primitives.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-primitives/swift-tagged-primitives.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
     ],
     targets: [
         .target(
-            name: "Linear Primitives",
+            name: "Linear",
             dependencies: [
-                .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
-                .product(name: "Format Primitives", package: "swift-format-primitives"),
-                .product(name: "Real Primitives", package: "swift-numeric-primitives"),
+                .product(name: "Dimension", package: "swift-dimension"),
+                .product(name: "Real", package: "swift-numeric"),
             ]
         ),
         .target(
-            name: "Linear Primitives Test Support",
+            name: "Linear Test Support",
             dependencies: [
-                "Linear Primitives",
+                .target(name: "Linear"),
                 .product(
-                    name: "Tagged Primitives Test Support",
-                    package: "swift-tagged-primitives"
+                    name: "Tagged Test Support",
+                    package: "swift-tagged"
                 ),
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Linear Primitives Tests",
+            name: "Linear Tests",
             dependencies: [
-                "Linear Primitives",
+                .target(name: "Linear"),
                 .product(
-                    name: "Tagged Primitives Standard Library Integration",
-                    package: "swift-tagged-primitives"
+                    name: "Tagged Standard Library Integration",
+                    package: "swift-tagged"
                 ),
-                "Linear Primitives Test Support",
+                .target(name: "Linear Test Support"),
             ]
         ),
     ],
