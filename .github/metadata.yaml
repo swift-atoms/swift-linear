@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "Dimension-checked vector and matrix types forming the category of vector spaces and linear maps, parameterized by scalar type and coordinate space for Swift."
+description: "Space-checked vector and matrix types forming the category of vector spaces and linear maps, parameterized by scalar type and coordinate space for Swift."
 topics:
   - primitives
   - algebra
