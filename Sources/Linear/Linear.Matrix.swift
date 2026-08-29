@@ -1,5 +1,7 @@
 public import Dimension
+public import Dimension_Tagged
 public import Real
+public import Tagged
 
 extension Linear {
 
@@ -286,12 +288,12 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Float {
 extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
 
     @inlinable
-    public static func rotationAngle(_ matrix: Self) -> Dimension.Radian<Scalar> {
+    public static func rotationAngle(_ matrix: Self) -> Dimension_Tagged::Radian<Scalar> {
         Radian(_unchecked: Scalar.math.atan2(matrix.c, matrix.a))
     }
 
     @inlinable
-    public var rotationAngle: Dimension.Radian<Scalar> {
+    public var rotationAngle: Dimension_Tagged::Radian<Scalar> {
         Self.rotationAngle(self)
     }
 }

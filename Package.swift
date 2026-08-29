@@ -27,6 +27,10 @@ let package = Package(
             branch: "main"
         ),
         .package(
+            url: "https://github.com/swift-molecules/swift-dimension-tagged.git",
+            branch: "main"
+        ),
+        .package(
             url: "https://github.com/swift-atoms/swift-numeric.git",
             branch: "main"
         ),
@@ -40,7 +44,12 @@ let package = Package(
             name: "Linear",
             dependencies: [
                 .product(name: "Dimension", package: "swift-dimension"),
+                .product(
+                    name: "Dimension Tagged",
+                    package: "swift-dimension-tagged"
+                ),
                 .product(name: "Real", package: "swift-numeric"),
+                .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
         .target(

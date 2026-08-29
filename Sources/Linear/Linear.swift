@@ -1,4 +1,6 @@
 public import Dimension
+public import Dimension_Tagged
+public import Tagged
 
 public enum Linear<Scalar: ~Copyable, Space>: ~Copyable {}
 
@@ -26,19 +28,19 @@ extension Linear {
 
 extension Linear {
 
-    public typealias Length = Dimension.Length<Space, Scalar>
+    public typealias Length = Dimension_Tagged::Length<Space, Scalar>
 
-    public typealias Radius = Dimension.Radius<Space, Scalar>
+    public typealias Radius = Dimension_Tagged::Radius<Space, Scalar>
 
-    public typealias Diameter = Dimension.Diameter<Space, Scalar>
+    public typealias Diameter = Dimension_Tagged::Diameter<Space, Scalar>
 
-    public typealias Distance = Dimension.Distance<Space, Scalar>
+    public typealias Distance = Dimension_Tagged::Distance<Space, Scalar>
 
-    public typealias Circumference = Dimension.Circumference<Space, Scalar>
+    public typealias Circumference = Dimension_Tagged::Circumference<Space, Scalar>
 
-    public typealias Perimeter = Dimension.Perimeter<Space, Scalar>
+    public typealias Perimeter = Dimension_Tagged::Perimeter<Space, Scalar>
 
-    public typealias ArcLength = Dimension.ArcLength<Space, Scalar>
+    public typealias ArcLength = Dimension_Tagged::ArcLength<Space, Scalar>
 
     public typealias Area = Dimension.Area<Space>.Value<Scalar>
 }
