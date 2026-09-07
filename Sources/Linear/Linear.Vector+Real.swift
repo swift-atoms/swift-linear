@@ -1,6 +1,5 @@
 public import Angle
 public import Numeric
-internal import Real
 public import Scale
 public import Spatial
 public import Tagged

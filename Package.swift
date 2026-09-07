@@ -12,14 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(
-            name: "Linear",
-            targets: ["Linear"]
-        ),
-        .library(
-            name: "Linear Test Support",
-            targets: ["Linear Test Support"]
-        ),
+        .library(name: "Linear", targets: ["Linear"]),
+        .library(name: "Linear Standard Library Integration", targets: ["Linear Standard Library Integration"]),
+        .library(name: "Linear Foundation Library Integration", targets: ["Linear Foundation Library Integration"]),
+        .library(name: "Linear Test Support", targets: ["Linear Test Support"]),
     ],
     dependencies: [
         .package(
@@ -50,18 +46,31 @@ let package = Package(
                 .product(name: "Spatial", package: "swift-spatial"),
                 .product(name: "Angle", package: "swift-angle"),
                 .product(name: "Scale", package: "swift-scale"),
-                .product(name: "Real", package: "swift-numeric"),
+                .product(name: "Numeric", package: "swift-numeric"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ]
+            ],
+            path: "Sources/Linear"
+        ),
+        .target(
+            name: "Linear Standard Library Integration",
+            dependencies: [
+                .target(name: "Linear"),
+            ],
+            path: "Sources/Linear Standard Library Integration"
+        ),
+        .target(
+            name: "Linear Foundation Library Integration",
+            dependencies: [
+                .target(name: "Linear"),
+                .target(name: "Linear Standard Library Integration"),
+            ],
+            path: "Sources/Linear Foundation Library Integration"
         ),
         .target(
             name: "Linear Test Support",
             dependencies: [
                 .target(name: "Linear"),
-                .product(
-                    name: "Tagged Test Support",
-                    package: "swift-tagged"
-                ),
+                .product(name: "Tagged Test Support", package: "swift-tagged"),
             ],
             path: "Tests/Support"
         ),
@@ -69,19 +78,19 @@ let package = Package(
             name: "Linear Tests",
             dependencies: [
                 .target(name: "Linear"),
-                .product(
-                    name: "Tagged Standard Library Integration",
-                    package: "swift-tagged"
-                ),
+                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
                 .target(name: "Linear Test Support"),
-            ]
+                .target(name: "Linear Standard Library Integration"),
+                .target(name: "Linear Foundation Library Integration"),
+            ],
+            path: "Tests/Linear Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -90,8 +99,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
