@@ -1,3 +1,4 @@
+public import Vector
 public import Spatial
 public import Tagged
 
@@ -5,17 +6,17 @@ extension Linear {
 
     public struct Vector<let N: Int> {
         @usableFromInline
-        internal var _components: InlineArray<N, Scalar>
+        internal var _storage: Vector::Vector<N, Scalar>
 
         @inlinable
         public var components: InlineArray<N, Scalar> {
-            get { _components }
-            set { _components = newValue }
+            get { _storage.components }
+            set { _storage.components = newValue }
         }
 
         @inlinable
         public init(_ components: consuming InlineArray<N, Scalar>) {
-            self._components = components
+            self._storage = Vector::Vector(components)
         }
     }
 }
@@ -26,12 +27,7 @@ extension Linear.Vector: Equatable where Scalar: Equatable {
 
     @inlinable
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        for i in 0..<N {
-            if lhs.components[i] != rhs.components[i] {
-                return false
-            }
-        }
-        return true
+        lhs._storage == rhs._storage
     }
 }
 
@@ -39,9 +35,7 @@ extension Linear.Vector: Hashable where Scalar: Hashable {
 
     @inlinable
     public func hash(into hasher: inout Hasher) {
-        for i in 0..<N {
-            hasher.combine(components[i])
-        }
+        _storage.hash(into: &hasher)
     }
 }
 
@@ -55,24 +49,17 @@ extension Linear {
 }
 
 #if !hasFeature(Embedded)
-    extension Linear.Vector: Codable where Scalar: Codable {
-
-        public init(from decoder: any Decoder) throws {
-            var container = try decoder.unkeyedContainer()
-            var components = InlineArray<N, Scalar>(repeating: try container.decode(Scalar.self))
-            for i in 1..<N {
-                components[i] = try container.decode(Scalar.self)
-            }
-            self.init(components)
-        }
-
-        public func encode(to encoder: any Encoder) throws {
-            var container = encoder.unkeyedContainer()
-            for i in 0..<N {
-                try container.encode(components[i])
-            }
-        }
+extension Linear.Vector: Decodable where Scalar: Decodable {
+    public init(from decoder: any Decoder) throws {
+        self.init(try Vector::Vector<N, Scalar>(from: decoder).components)
     }
+}
+
+extension Linear.Vector: Encodable where Scalar: Encodable {
+    public func encode(to encoder: any Encoder) throws {
+        try _storage.encode(to: encoder)
+    }
+}
 #endif
 
 extension Linear.Vector {
@@ -91,22 +78,18 @@ extension Linear.Vector {
         _ other: borrowing Linear<U, Space>.Vector<N>,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
-        var comps = InlineArray<N, Scalar>(repeating: try transform(other.components[0]))
-        for i in 1..<N {
-            comps[i] = try transform(other.components[i])
+        let source = other.components
+        let components: InlineArray<N, Scalar> = try InlineArray { index throws(E) in
+            try transform(source[index])
         }
-        self.init(comps)
+        self.init(components)
     }
 
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Linear<Result, Space>.Vector<N> {
-        var result = InlineArray<N, Result>(repeating: try transform(components[0]))
-        for i in 1..<N {
-            result[i] = try transform(components[i])
-        }
-        return Linear<Result, Space>.Vector<N>(result)
+        try Linear<Result, Space>.Vector<N>(self, transform)
     }
 }
 
@@ -161,11 +144,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
 
     @inlinable
     public static func dot(_ lhs: Self, _ rhs: Self) -> Scalar {
-        var sum = Scalar.zero
-        for i in 0..<N {
-            sum += lhs.components[i] * rhs.components[i]
-        }
-        return sum
+        lhs._storage.dot(rhs._storage)
     }
 
     @inlinable

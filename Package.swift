@@ -18,6 +18,8 @@ let package = Package(
         .library(name: "Linear Test Support", targets: ["Linear Test Support"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-atoms/swift-vector.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-matrix.git", branch: "main"),
         .package(
             url: "https://github.com/swift-atoms/swift-spatial.git",
             branch: "main"
@@ -31,7 +33,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-numeric.git",
+            url: "https://github.com/swift-atoms/swift-trigonometry.git",
             branch: "main"
         ),
         .package(
@@ -44,9 +46,11 @@ let package = Package(
             name: "Linear",
             dependencies: [
                 .product(name: "Spatial", package: "swift-spatial"),
+                .product(name: "Vector", package: "swift-vector"),
+                .product(name: "Matrix", package: "swift-matrix"),
                 .product(name: "Angle", package: "swift-angle"),
                 .product(name: "Scale", package: "swift-scale"),
-                .product(name: "Numeric", package: "swift-numeric"),
+                .product(name: "Trigonometry", package: "swift-trigonometry"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Sources/Linear"
@@ -78,7 +82,8 @@ let package = Package(
             name: "Linear Tests",
             dependencies: [
                 .target(name: "Linear"),
-                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
+                .product(name: "Trigonometry", package: "swift-trigonometry"),
+                .product(name: "Tagged", package: "swift-tagged"),
                 .target(name: "Linear Test Support"),
                 .target(name: "Linear Standard Library Integration"),
                 .target(name: "Linear Foundation Library Integration"),

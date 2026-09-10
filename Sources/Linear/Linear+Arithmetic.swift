@@ -1,5 +1,7 @@
 public import Scale
 public import Tagged
+public import Matrix
+public import Vector
 
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
@@ -41,15 +43,7 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
 
     @inlinable
     public static func * (lhs: borrowing Self, rhs: Linear.Vector<Columns>) -> Linear.Vector<Rows> {
-        var result = InlineArray<Rows, Scalar>(repeating: .zero)
-        for i in 0..<Rows {
-            var sum: Scalar = .zero
-            for j in 0..<Columns {
-                sum += lhs[i, j] * rhs.components[j]
-            }
-            result[i] = sum
-        }
-        return Linear.Vector<Rows>(result)
+        Linear.Vector<Rows>(lhs._storage.applied(to: rhs._storage).components)
     }
 }
 
@@ -58,19 +52,7 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
     @inlinable
     public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P>
     {
-        var result = InlineArray<Rows, InlineArray<P, Scalar>>(
-            repeating: InlineArray(repeating: .zero)
-        )
-        for i in 0..<Rows {
-            for j in 0..<P {
-                var sum: Scalar = .zero
-                for k in 0..<Columns {
-                    sum += self[i, k] * rhs[k, j]
-                }
-                result[i][j] = sum
-            }
-        }
-        return Linear.Matrix<Rows, P>(rows: result)
+        Linear.Matrix<Rows, P>(rows: _storage.multiplied(by: rhs._storage).rows)
     }
 
     @inlinable
@@ -79,19 +61,6 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
         rhs: Linear.Matrix<Columns, P>
     ) -> Linear.Matrix<Rows, P> {
         lhs.multiplied(by: rhs)
-    }
-}
-
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
-
-    @inlinable
-    public static func * (
-        lhs: Self,
-        rhs: Linear<Scalar, Space>.Vector<2>
-    ) -> Linear<Scalar, Space>.Vector<2> {
-        let x = lhs.a * rhs.dx.underlying + lhs.b * rhs.dy.underlying
-        let y = lhs.c * rhs.dx.underlying + lhs.d * rhs.dy.underlying
-        return Linear<Scalar, Space>.Vector(dx: .init(_unchecked: x), dy: .init(_unchecked: y))
     }
 }
 

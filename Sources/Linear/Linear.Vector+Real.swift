@@ -1,10 +1,10 @@
 public import Angle
-public import Numeric
+public import Trigonometry
 public import Scale
 public import Spatial
 public import Tagged
 
-extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Numeric.Transcendental {
+extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 
     @inlinable
     public static func angle(_ vector: Self) -> Radian<Scalar> {
@@ -45,7 +45,7 @@ extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Numeric.Tran
 
     @inlinable
     public static func signedAngle(_ lhs: Self, to rhs: Self) -> Radian<Scalar> {
-        Radian(_unchecked: Scalar._atan2(Self.cross(lhs, rhs).underlying, dot(lhs, rhs)))
+        Radian(_unchecked: Scalar.atan2(Self.cross(lhs, rhs).underlying, dot(lhs, rhs)))
     }
 
     @inlinable

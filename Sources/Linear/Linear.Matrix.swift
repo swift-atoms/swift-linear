@@ -1,5 +1,6 @@
+public import Matrix
 public import Angle
-public import Numeric
+public import Trigonometry
 public import Scale
 public import Tagged
 
@@ -7,11 +8,17 @@ extension Linear {
 
     public struct Matrix<let Rows: Int, let Columns: Int> {
 
-        public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>>
+        @usableFromInline
+        internal var _storage: Matrix::Matrix<Rows, Columns, Scalar>
+
+        public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>> {
+            get { _storage.rows }
+            set { _storage.rows = newValue }
+        }
 
         @inlinable
         public init(rows: consuming InlineArray<Rows, InlineArray<Columns, Scalar>>) {
-            self.rows = rows
+            self._storage = Matrix::Matrix(rows: rows)
         }
     }
 }
@@ -37,14 +44,7 @@ extension Linear.Matrix: Equatable where Scalar: Equatable {
 
     @inlinable
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        for i in 0..<Rows {
-            for j in 0..<Columns {
-                if lhs.rows[i][j] != rhs.rows[i][j] {
-                    return false
-                }
-            }
-        }
-        return true
+        lhs._storage == rhs._storage
     }
 }
 
@@ -52,11 +52,7 @@ extension Linear.Matrix: Hashable where Scalar: Hashable {
 
     @inlinable
     public func hash(into hasher: inout Hasher) {
-        for i in 0..<Rows {
-            for j in 0..<Columns {
-                hasher.combine(rows[i][j])
-            }
-        }
+        _storage.hash(into: &hasher)
     }
 }
 
@@ -96,15 +92,7 @@ extension Linear.Matrix {
 
     @inlinable
     public static func transpose(_ matrix: Self) -> Linear.Matrix<Columns, Rows> {
-        var result = InlineArray<Columns, InlineArray<Rows, Scalar>>(
-            repeating: InlineArray(repeating: matrix.rows[0][0])
-        )
-        for i in 0..<Rows {
-            for j in 0..<Columns {
-                result[j][i] = matrix.rows[i][j]
-            }
-        }
-        return Linear.Matrix<Columns, Rows>(rows: result)
+        Linear.Matrix<Columns, Rows>(rows: matrix._storage.transposed.rows)
     }
 
     @inlinable
@@ -259,7 +247,8 @@ where Rows == 2, Columns == 2, Scalar: SignedNumeric {
     }
 }
 
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
+extension Linear.Matrix
+where Rows == 2, Columns == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 
     @inlinable
     public static func rotation(_ angle: Radian<Scalar>) -> Self {
@@ -272,24 +261,12 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
     }
 }
 
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Float {
-
-    @inlinable
-    public static func rotation(_ angle: Radian<Scalar>) -> Self {
-        rotation(cos: angle.cos.value, sin: angle.sin.value)
-    }
-
-    @inlinable
-    public static func rotation(_ angle: Degree<Scalar>) -> Self {
-        rotation(angle.radians)
-    }
-}
-
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar == Double {
+extension Linear.Matrix
+where Rows == 2, Columns == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 
     @inlinable
     public static func rotationAngle(_ matrix: Self) -> Angle::Radian<Scalar> {
-        Radian(_unchecked: Scalar.math.atan2(matrix.c, matrix.a))
+        Radian(_unchecked: Scalar.atan2(matrix.c, matrix.a))
     }
 
     @inlinable
@@ -346,12 +323,9 @@ extension Linear.Matrix {
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Linear<Result, Space>.Matrix<Rows, Columns> {
-        var result = InlineArray<Rows, InlineArray<Columns, Result>>(
-            repeating: InlineArray(repeating: try transform(rows[0][0]))
-        )
-        for i in 0..<Rows {
-            for j in 0..<Columns {
-                result[i][j] = try transform(rows[i][j])
+        let result: InlineArray<Rows, InlineArray<Columns, Result>> = try InlineArray { row throws(E) in
+            try InlineArray { column throws(E) in
+                try transform(rows[row][column])
             }
         }
         return Linear<Result, Space>.Matrix<Rows, Columns>(rows: result)
