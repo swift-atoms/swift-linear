@@ -3,8 +3,6 @@ import Linear
 import Testing
 public import Trigonometry
 
-// This runtime implementation belongs only to the test executable. Linear's
-// production target depends on the capability, not Foundation or Numeric Shims.
 extension Double: @retroactive Trigonometry.Circular {
     public static func sin(_ x: Double) -> Double { Foundation.sin(x) }
     public static func cos(_ x: Double) -> Double { Foundation.cos(x) }
