@@ -1,4 +1,4 @@
-public import Spatial
+public import Space
 public import Tagged
 
 public enum Linear<Scalar: ~Copyable, Space>: ~Copyable {}
@@ -16,7 +16,7 @@ extension Linear {
 
     public typealias Dw = Displacement.W<Space>.Value<Scalar>
 
-    public typealias Magnitude = Spatial::Magnitude<Space>.Value<Scalar>
+    public typealias Magnitude = Space::Magnitude<Space>.Value<Scalar>
 
     public typealias Width = Extent.X<Space>.Value<Scalar>
 
@@ -27,19 +27,19 @@ extension Linear {
 
 extension Linear {
 
-    public typealias Length = Spatial::Length<Space, Scalar>
+    public typealias Length = Space::Length<Space, Scalar>
 
-    public typealias Radius = Spatial::Radius<Space, Scalar>
+    public typealias Radius = Space::Radius<Space, Scalar>
 
-    public typealias Diameter = Spatial::Diameter<Space, Scalar>
+    public typealias Diameter = Space::Diameter<Space, Scalar>
 
-    public typealias Distance = Spatial::Distance<Space, Scalar>
+    public typealias Distance = Space::Distance<Space, Scalar>
 
-    public typealias Circumference = Spatial::Circumference<Space, Scalar>
+    public typealias Circumference = Space::Circumference<Space, Scalar>
 
-    public typealias Perimeter = Spatial::Perimeter<Space, Scalar>
+    public typealias Perimeter = Space::Perimeter<Space, Scalar>
 
-    public typealias ArcLength = Spatial::ArcLength<Space, Scalar>
+    public typealias ArcLength = Space::ArcLength<Space, Scalar>
 
-    public typealias Area = Spatial::Area<Space>.Value<Scalar>
+    public typealias Area = Space::Area<Space>.Value<Scalar>
 }

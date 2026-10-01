@@ -1,6 +1,6 @@
 public import Angle
 public import Trigonometry
-public import Spatial
+public import Space
 public import Tagged
 
 extension Tagged::Tagged

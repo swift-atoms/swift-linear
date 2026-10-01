@@ -45,7 +45,7 @@ let package = Package(
         .target(
             name: "Linear",
             dependencies: [
-                .product(name: "Spatial", package: "swift-spatial"),
+                .product(name: "Space", package: "swift-spatial"),
                 .product(name: "Vector", package: "swift-vector"),
                 .product(name: "Matrix", package: "swift-matrix"),
                 .product(name: "Angle", package: "swift-angle"),

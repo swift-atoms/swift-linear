@@ -1,5 +1,5 @@
 public import Vector
-public import Spatial
+public import Space
 public import Tagged
 
 extension Linear {
