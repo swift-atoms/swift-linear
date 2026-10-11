@@ -39,7 +39,7 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     return Linear<Scalar, Space>.Vector<N>(result)
 }
 
-extension Linear.Matrix where Scalar: Swift.Numeric {
+extension Linear.Matrix where Scalar: Swift::Numeric {
 
     @inlinable
     public static func * (lhs: borrowing Self, rhs: Linear.Vector<Columns>) -> Linear.Vector<Rows> {
@@ -47,7 +47,7 @@ extension Linear.Matrix where Scalar: Swift.Numeric {
     }
 }
 
-extension Linear.Matrix where Scalar: Swift.Numeric {
+extension Linear.Matrix where Scalar: Swift::Numeric {
 
     @inlinable
     public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P>
@@ -161,7 +161,7 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
 }
 
 @inlinable
-public func dot<Scalar: Swift.Numeric, Space, let N: Int>(
+public func dot<Scalar: Swift::Numeric, Space, let N: Int>(
     _ lhs: Linear<Scalar, Space>.Vector<N>,
     _ rhs: Linear<Scalar, Space>.Vector<N>
 ) -> Scalar {
@@ -173,7 +173,7 @@ public func dot<Scalar: Swift.Numeric, Space, let N: Int>(
 }
 
 @inlinable
-public func dot<Scalar: Swift.Numeric, Space>(
+public func dot<Scalar: Swift::Numeric, Space>(
     _ lhs: Linear<Scalar, Space>.Vector<2>,
     _ rhs: Linear<Scalar, Space>.Vector<2>
 ) -> Scalar {
@@ -181,7 +181,7 @@ public func dot<Scalar: Swift.Numeric, Space>(
 }
 
 @inlinable
-public func cross<Scalar: Swift.Numeric, Space>(
+public func cross<Scalar: Swift::Numeric, Space>(
     _ lhs: Linear<Scalar, Space>.Vector<2>,
     _ rhs: Linear<Scalar, Space>.Vector<2>
 ) -> Scalar {

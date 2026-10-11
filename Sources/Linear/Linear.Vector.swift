@@ -9,15 +9,17 @@ extension Linear {
         internal var _storage: Vector::Vector<N, Scalar>
 
         @inlinable
-        public var components: InlineArray<N, Scalar> {
-            get { _storage.components }
-            set { _storage.components = newValue }
-        }
-
-        @inlinable
         public init(_ components: consuming InlineArray<N, Scalar>) {
             self._storage = Vector::Vector(components)
         }
+    }
+}
+
+extension Linear.Vector {
+    @inlinable
+    public var components: InlineArray<N, Scalar> {
+        get { _storage.components }
+        set { _storage.components = newValue }
     }
 }
 
@@ -74,7 +76,7 @@ extension Linear.Vector {
 extension Linear.Vector {
 
     @inlinable
-    public init<U, E: Swift.Error>(
+    public init<U, E: Swift::Error>(
         _ other: borrowing Linear<U, Space>.Vector<N>,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -86,7 +88,7 @@ extension Linear.Vector {
     }
 
     @inlinable
-    public func map<Result, E: Swift.Error>(
+    public func map<Result, E: Swift::Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Linear<Result, Space>.Vector<N> {
         try Linear<Result, Space>.Vector<N>(self, transform)

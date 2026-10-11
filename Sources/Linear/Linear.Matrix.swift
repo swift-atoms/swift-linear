@@ -11,15 +11,17 @@ extension Linear {
         @usableFromInline
         internal var _storage: Matrix::Matrix<Rows, Columns, Scalar>
 
-        public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>> {
-            get { _storage.rows }
-            set { _storage.rows = newValue }
-        }
-
         @inlinable
         public init(rows: consuming InlineArray<Rows, InlineArray<Columns, Scalar>>) {
             self._storage = Matrix::Matrix(rows: rows)
         }
+    }
+}
+
+extension Linear.Matrix {
+    public var rows: InlineArray<Rows, InlineArray<Columns, Scalar>> {
+        get { _storage.rows }
+        set { _storage.rows = newValue }
     }
 }
 
@@ -150,7 +152,7 @@ extension Linear.Matrix where Rows == 2, Columns == 2 {
     }
 }
 
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: Swift.Numeric {
+extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: Swift::Numeric {
 
     @inlinable
     public static func determinant(_ matrix: Self) -> Scalar {
@@ -290,7 +292,7 @@ extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
     }
 }
 
-extension Linear.Matrix where Rows == 3, Columns == 3, Scalar: Swift.Numeric {
+extension Linear.Matrix where Rows == 3, Columns == 3, Scalar: Swift::Numeric {
 
     @inlinable
     public static func determinant(_ matrix: Self) -> Scalar {
@@ -320,7 +322,7 @@ extension Linear.Matrix where Rows == 3, Columns == 3, Scalar: Swift.Numeric {
 extension Linear.Matrix {
 
     @inlinable
-    public func map<Result, E: Swift.Error>(
+    public func map<Result, E: Swift::Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Linear<Result, Space>.Matrix<Rows, Columns> {
         let result: InlineArray<Rows, InlineArray<Columns, Result>> = try InlineArray { row throws(E) in
