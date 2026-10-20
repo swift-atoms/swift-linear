@@ -1,7 +1,7 @@
 public import Angle
-public import Trigonometry
 public import Space
 public import Tagged
+public import Trigonometry
 
 extension Tagged::Tagged
 where Tag == Angle.Radian, Underlying: BinaryFloatingPoint & Trigonometry.Circular {

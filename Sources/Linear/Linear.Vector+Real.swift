@@ -1,8 +1,8 @@
 public import Angle
-public import Trigonometry
 public import Scale
 internal import Space
 public import Tagged
+public import Trigonometry
 
 extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 

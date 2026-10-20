@@ -1,6 +1,6 @@
+public import Matrix
 public import Scale
 public import Tagged
-public import Matrix
 public import Vector
 
 @inlinable
@@ -50,8 +50,7 @@ extension Linear.Matrix where Scalar: Swift::Numeric {
 extension Linear.Matrix where Scalar: Swift::Numeric {
 
     @inlinable
-    public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P>
-    {
+    public func multiplied<let P: Int>(by rhs: Linear.Matrix<Columns, P>) -> Linear.Matrix<Rows, P> {
         Linear.Matrix<Rows, P>(rows: _storage.multiplied(by: rhs._storage).rows)
     }
 

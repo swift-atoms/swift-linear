@@ -1,6 +1,6 @@
-public import Vector
 public import Space
 public import Tagged
+public import Vector
 
 extension Linear {
 
@@ -51,17 +51,17 @@ extension Linear {
 }
 
 #if !hasFeature(Embedded)
-extension Linear.Vector: Decodable where Scalar: Decodable {
-    public init(from decoder: any Decoder) throws {
-        self.init(try Vector::Vector<N, Scalar>(from: decoder).components)
+    extension Linear.Vector: Decodable where Scalar: Decodable {
+        public init(from decoder: any Decoder) throws {
+            self.init(try Vector::Vector<N, Scalar>(from: decoder).components)
+        }
     }
-}
 
-extension Linear.Vector: Encodable where Scalar: Encodable {
-    public func encode(to encoder: any Encoder) throws {
-        try _storage.encode(to: encoder)
+    extension Linear.Vector: Encodable where Scalar: Encodable {
+        public func encode(to encoder: any Encoder) throws {
+            try _storage.encode(to: encoder)
+        }
     }
-}
 #endif
 
 extension Linear.Vector {

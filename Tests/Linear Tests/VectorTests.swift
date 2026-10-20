@@ -76,7 +76,10 @@ private enum MappingFailure: Error { case stop }
         #expect(transposed[row: 0].count == 0)
         #expect(transposed.transpose == noRows)
         var calls = 0
-        let result = transposed.map { value in calls += 1; return String(value) }
+        let result = transposed.map { value in
+            calls += 1
+            return String(value)
+        }
         #expect(result.rows.count == 3)
         #expect(calls == 0)
         let product: Linear<Int, Drawing>.Matrix<3, 3> = transposed.multiplied(by: noRows)
@@ -86,7 +89,10 @@ private enum MappingFailure: Error { case stop }
     @Test func `matrix mapping visits each scalar once in row order`() {
         let matrix = Linear<Int, Drawing>.Matrix<2, 2>(rows: [[1, 2], [3, 4]])
         var visited: [Int] = []
-        let result = matrix.map { value in visited.append(value); return String(value) }
+        let result = matrix.map { value in
+            visited.append(value)
+            return String(value)
+        }
         #expect(visited == [1, 2, 3, 4])
         #expect(result[1, 0] == "3")
         visited = []

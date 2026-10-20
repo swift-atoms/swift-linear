@@ -1,8 +1,8 @@
-public import Matrix
 public import Angle
-public import Trigonometry
+public import Matrix
 public import Scale
 public import Tagged
+public import Trigonometry
 
 extension Linear {
 
