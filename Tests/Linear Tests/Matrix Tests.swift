@@ -247,4 +247,13 @@ struct `Linear.Matrix Tests` {
         #expect(result[1, 0] == 49)
         #expect(result[1, 1] == 64)
     }
+
+    @Test
+    func `Compound multiplication concatenates on the right`() {
+        let scale = Mat2x2(a: 2, b: 0, c: 0, d: 3)
+        let shear = Mat2x2(a: 1, b: 1, c: 0, d: 1)
+        var accumulated = scale
+        accumulated *= shear
+        #expect(accumulated == scale * shear)
+    }
 }

@@ -63,6 +63,14 @@ extension Linear.Matrix where Scalar: Swift::Numeric {
     }
 }
 
+extension Linear.Matrix where Scalar: Swift::Numeric, Rows == Columns {
+
+    @inlinable
+    public static func *= (lhs: inout Self, rhs: Self) {
+        lhs = lhs * rhs
+    }
+}
+
 extension Linear.Vector where Scalar: FloatingPoint {
 
     @inlinable
