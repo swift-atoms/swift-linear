@@ -21,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/swift-atoms/swift-vector.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-matrix.git", branch: "main"),
         .package(
-            url: "https://github.com/swift-atoms/swift-spatial.git",
+            url: "https://github.com/swift-atoms/swift-space.git",
             branch: "main"
         ),
         .package(
@@ -45,7 +45,7 @@ let package = Package(
         .target(
             name: "Linear",
             dependencies: [
-                .product(name: "Space", package: "swift-spatial"),
+                .product(name: "Space", package: "swift-space"),
                 .product(name: "Vector", package: "swift-vector"),
                 .product(name: "Matrix", package: "swift-matrix"),
                 .product(name: "Angle", package: "swift-angle"),
