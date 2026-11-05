@@ -46,3 +46,15 @@ func `Rotating by a quarter turn preserves the vector length`() {
     #expect(abs(rotated.dy.underlying - 3) < 1e-12)
     #expect(abs(rotated.length.underlying - 5) < 1e-12)
 }
+
+@Test
+func `Angle between parallel vectors is not NaN when rounding pushes the cosine past one`() {
+    let vector = Vector(dx: 0.3468563115085088, dy: 0.6267339884069809)
+    let same = vector.angle(to: vector)
+    #expect(!same.underlying.isNaN)
+    #expect(abs(same.underlying) < 1e-12)
+    let opposite = Vector(dx: -0.3468563115085088, dy: -0.6267339884069809)
+    let reversed = vector.angle(to: opposite)
+    #expect(!reversed.underlying.isNaN)
+    #expect(abs(reversed.underlying - Double.pi) < 1e-12)
+}

@@ -35,7 +35,8 @@ extension Linear.Vector where N == 2, Scalar: BinaryFloatingPoint & Trigonometry
         let dotProduct = dot(lhs, rhs)
         let magnitudes = lhs.length.underlying * rhs.length.underlying
         guard magnitudes > 0 else { return .zero }
-        return .acos(Scale(dotProduct / magnitudes))
+        let ratio = Swift.min(Swift.max(dotProduct / magnitudes, -1), 1)
+        return .acos(Scale(ratio))
     }
 
     @inlinable
