@@ -83,7 +83,7 @@ where Rows == Columns, Scalar: AdditiveArithmetic & ExpressibleByIntegerLiteral 
         var rows = InlineArray<Rows, InlineArray<Columns, Scalar>>(
             repeating: InlineArray(repeating: .zero)
         )
-        for i in 0..<Rows {
+        (0..<Rows).forEach { i in
             rows[i][i] = 1
         }
         return Self(rows: rows)
@@ -108,7 +108,7 @@ extension Linear.Matrix where Rows == Columns, Scalar: AdditiveArithmetic {
     @inlinable
     public static func trace(_ matrix: Self) -> Scalar {
         var sum: Scalar = .zero
-        for i in 0..<Rows {
+        (0..<Rows).forEach { i in
             sum += matrix[i, i]
         }
         return sum

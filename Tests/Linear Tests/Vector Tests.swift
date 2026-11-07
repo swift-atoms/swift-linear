@@ -3,7 +3,7 @@ import Linear
 import Testing
 
 private enum Drawing {}
-private enum MappingFailure: Error { case stop }
+private enum MappingFailure: Swift.Error { case stop }
 
 @Suite struct `Linear atom delegation` {
     @Test func `empty vectors map without evaluating transform`() throws {

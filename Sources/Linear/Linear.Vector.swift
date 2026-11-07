@@ -108,7 +108,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
     @inlinable
     public static func lengthSquared(_ vector: Self) -> Scalar {
         var sum = Scalar.zero
-        for i in 0..<N {
+        (0..<N).forEach { i in
             sum += vector.components[i] * vector.components[i]
         }
         return sum
@@ -319,7 +319,7 @@ extension Linear.Vector {
     @inlinable
     public static func zip(_ a: Self, _ b: Self, _ combine: (Scalar, Scalar) -> Scalar) -> Self {
         var result = a.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = combine(a.components[i], b.components[i])
         }
         return Self(result)

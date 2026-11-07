@@ -9,7 +9,7 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Scale<1, Scalar>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = lhs.components
-    for i in 0..<N {
+    (0..<N).forEach { i in
         result[i] = lhs.components[i] * rhs.value
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -21,7 +21,7 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Linear<Scalar, Space>.Vector<N>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = rhs.components
-    for i in 0..<N {
+    (0..<N).forEach { i in
         result[i] = lhs.value * rhs.components[i]
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -33,7 +33,7 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Scale<1, Scalar>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = lhs.components
-    for i in 0..<N {
+    (0..<N).forEach { i in
         result[i] = lhs.components[i] / rhs.value
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -173,7 +173,7 @@ public func dot<Scalar: Swift::Numeric, Space, let N: Int>(
     _ rhs: Linear<Scalar, Space>.Vector<N>
 ) -> Scalar {
     var sum: Scalar = .zero
-    for i in 0..<N {
+    (0..<N).forEach { i in
         sum += lhs.components[i] * rhs.components[i]
     }
     return sum
