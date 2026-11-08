@@ -98,7 +98,7 @@ extension Linear.Matrix where Scalar: SignedNumeric {
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.rows
         (0..<Rows).forEach { i in
-            for j in 0..<Columns {
+            (0..<Columns).forEach { j in
                 result[i][j] = -value.rows[i][j]
             }
         }
@@ -112,7 +112,7 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
         (0..<Rows).forEach { i in
-            for j in 0..<Columns {
+            (0..<Columns).forEach { j in
                 result[i][j] = lhs.rows[i][j] + rhs.rows[i][j]
             }
         }
@@ -123,7 +123,7 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
         (0..<Rows).forEach { i in
-            for j in 0..<Columns {
+            (0..<Columns).forEach { j in
                 result[i][j] = lhs.rows[i][j] - rhs.rows[i][j]
             }
         }
