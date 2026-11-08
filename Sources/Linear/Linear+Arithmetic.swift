@@ -76,7 +76,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
     @inlinable
     package static func * (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.components[i] * rhs
         }
         return Self(result)
@@ -85,7 +85,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
     @inlinable
     package static func / (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.components[i] / rhs
         }
         return Self(result)
@@ -97,7 +97,7 @@ extension Linear.Matrix where Scalar: SignedNumeric {
     @inlinable
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.rows
-        for i in 0..<Rows {
+        (0..<Rows).forEach { i in
             for j in 0..<Columns {
                 result[i][j] = -value.rows[i][j]
             }
@@ -111,7 +111,7 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     @inlinable
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
-        for i in 0..<Rows {
+        (0..<Rows).forEach { i in
             for j in 0..<Columns {
                 result[i][j] = lhs.rows[i][j] + rhs.rows[i][j]
             }
@@ -122,7 +122,7 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     @inlinable
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
-        for i in 0..<Rows {
+        (0..<Rows).forEach { i in
             for j in 0..<Columns {
                 result[i][j] = lhs.rows[i][j] - rhs.rows[i][j]
             }
@@ -137,7 +137,7 @@ extension Linear.Vector where Scalar: SignedNumeric {
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = -value.components[i]
         }
         return Self(result)
@@ -150,7 +150,7 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.components[i] + rhs.components[i]
         }
         return Self(result)
@@ -160,7 +160,7 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.components
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.components[i] - rhs.components[i]
         }
         return Self(result)
