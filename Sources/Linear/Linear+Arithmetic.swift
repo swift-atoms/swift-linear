@@ -9,7 +9,7 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Scale<1, Scalar>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = lhs.components
-    (0..<N).forEach { i in
+    for i in 0..<N {
         result[i] = lhs.components[i] * rhs.value
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -21,7 +21,7 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Linear<Scalar, Space>.Vector<N>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = rhs.components
-    (0..<N).forEach { i in
+    for i in 0..<N {
         result[i] = lhs.value * rhs.components[i]
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -33,7 +33,7 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     rhs: Scale<1, Scalar>
 ) -> Linear<Scalar, Space>.Vector<N> {
     var result = lhs.components
-    (0..<N).forEach { i in
+    for i in 0..<N {
         result[i] = lhs.components[i] / rhs.value
     }
     return Linear<Scalar, Space>.Vector<N>(result)
@@ -76,7 +76,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
     @inlinable
     package static func * (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
-        (0..<N).forEach { i in
+        for i in 0..<N {
             result[i] = lhs.components[i] * rhs
         }
         return Self(result)
@@ -85,7 +85,7 @@ extension Linear.Vector where Scalar: FloatingPoint {
     @inlinable
     package static func / (lhs: borrowing Self, rhs: Scalar) -> Self {
         var result = lhs.components
-        (0..<N).forEach { i in
+        for i in 0..<N {
             result[i] = lhs.components[i] / rhs
         }
         return Self(result)
@@ -97,8 +97,8 @@ extension Linear.Matrix where Scalar: SignedNumeric {
     @inlinable
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.rows
-        (0..<Rows).forEach { i in
-            (0..<Columns).forEach { j in
+        for i in 0..<Rows {
+            for j in 0..<Columns {
                 result[i][j] = -value.rows[i][j]
             }
         }
@@ -111,8 +111,8 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     @inlinable
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
-        (0..<Rows).forEach { i in
-            (0..<Columns).forEach { j in
+        for i in 0..<Rows {
+            for j in 0..<Columns {
                 result[i][j] = lhs.rows[i][j] + rhs.rows[i][j]
             }
         }
@@ -122,8 +122,8 @@ extension Linear.Matrix where Scalar: AdditiveArithmetic {
     @inlinable
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.rows
-        (0..<Rows).forEach { i in
-            (0..<Columns).forEach { j in
+        for i in 0..<Rows {
+            for j in 0..<Columns {
                 result[i][j] = lhs.rows[i][j] - rhs.rows[i][j]
             }
         }
@@ -137,7 +137,7 @@ extension Linear.Vector where Scalar: SignedNumeric {
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {
         var result = value.components
-        (0..<N).forEach { i in
+        for i in 0..<N {
             result[i] = -value.components[i]
         }
         return Self(result)
@@ -150,7 +150,7 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.components
-        (0..<N).forEach { i in
+        for i in 0..<N {
             result[i] = lhs.components[i] + rhs.components[i]
         }
         return Self(result)
@@ -160,7 +160,7 @@ extension Linear.Vector where Scalar: AdditiveArithmetic {
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         var result = lhs.components
-        (0..<N).forEach { i in
+        for i in 0..<N {
             result[i] = lhs.components[i] - rhs.components[i]
         }
         return Self(result)
@@ -173,7 +173,7 @@ public func dot<Scalar: Swift::Numeric, Space, let N: Int>(
     _ rhs: Linear<Scalar, Space>.Vector<N>
 ) -> Scalar {
     var sum: Scalar = .zero
-    (0..<N).forEach { i in
+    for i in 0..<N {
         sum += lhs.components[i] * rhs.components[i]
     }
     return sum
