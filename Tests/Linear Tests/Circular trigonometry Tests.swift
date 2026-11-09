@@ -20,8 +20,42 @@ func `Matrix rotation and angle extraction reuse the circular capability`() {
     typealias Matrix = Linear<Double, Void>.Matrix<2, 2>
     let angle = Radian(_unchecked: Double.pi / 3)
     let matrix = Matrix.rotation(angle)
-    #expect(abs(matrix.rotationAngle.underlying - angle.underlying) < 1e-12)
+    let parts = matrix.decomposition
+    #expect(abs((parts?.rotation.underlying ?? .nan) - angle.underlying) < 1e-12)
+    #expect(abs((parts?.scale.x ?? .nan) - 1) < 1e-12)
+    #expect(abs((parts?.scale.y ?? .nan) - 1) < 1e-12)
+    #expect(abs(parts?.shear ?? .nan) < 1e-12)
     #expect(abs(matrix.determinant - 1) < 1e-12)
+}
+
+@Test
+func `Decomposition of a sheared matrix recovers rotation, scale and shear`() throws {
+    typealias Matrix = Linear<Double, Void>.Matrix<2, 2>
+    let angle = Radian(_unchecked: Double.pi / 5)
+    let matrix = Matrix.rotation(angle) * Matrix.scale(x: 2, y: 3) * Matrix.shear(x: 0.5, y: 0)
+    let parts = try #require(matrix.decomposition)
+    #expect(abs(parts.rotation.underlying - angle.underlying) < 1e-12)
+    #expect(abs(parts.scale.x - 2) < 1e-12)
+    #expect(abs(parts.scale.y - 3) < 1e-12)
+    #expect(abs(parts.shear - 0.5) < 1e-12)
+    let rebuilt =
+        Matrix.rotation(parts.rotation) * Matrix.scale(x: parts.scale.x, y: parts.scale.y)
+        * Matrix.shear(x: parts.shear, y: 0)
+    #expect(abs(rebuilt.a - matrix.a) < 1e-12)
+    #expect(abs(rebuilt.b - matrix.b) < 1e-12)
+    #expect(abs(rebuilt.c - matrix.c) < 1e-12)
+    #expect(abs(rebuilt.d - matrix.d) < 1e-12)
+}
+
+@Test
+func `Decomposition carries a reflection in the y scale and is nil for a zero first column`() throws {
+    typealias Matrix = Linear<Double, Void>.Matrix<2, 2>
+    let parts = try #require(Matrix.scale(x: 2, y: -4).decomposition)
+    #expect(abs(parts.rotation.underlying) < 1e-12)
+    #expect(parts.scale.x == 2)
+    #expect(parts.scale.y == -4)
+    #expect(parts.shear == 0)
+    #expect(Matrix(a: 0, b: 1, c: 0, d: 1).decomposition == nil)
 }
 
 @Test

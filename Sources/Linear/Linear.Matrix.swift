@@ -266,29 +266,27 @@ where Rows == 2, Columns == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circul
 extension Linear.Matrix
 where Rows == 2, Columns == 2, Scalar: BinaryFloatingPoint & Trigonometry.Circular {
 
+    /// Splits the matrix into a rotation, an axis scale and a horizontal shear,
+    /// so that `matrix == rotation(r) * scale(x: sx, y: sy) * shear(x: k, y: 0)`.
+    ///
+    /// The rotation is the direction of the first column, `sx` its length, `sy` the
+    /// determinant over `sx` (negative for a reflection) and `k` the first column's
+    /// share of the second, over `sx²`. Returns `nil` when the first column is zero.
     @inlinable
-    public static func rotationAngle(_ matrix: Self) -> Angle::Radian<Scalar> {
-        Radian(_unchecked: Scalar.atan2(matrix.c, matrix.a))
+    public static func decomposition(
+        _ matrix: Self
+    ) -> (rotation: Angle::Radian<Scalar>, scale: (x: Scalar, y: Scalar), shear: Scalar)? {
+        let lengthSquared = matrix.a * matrix.a + matrix.c * matrix.c
+        guard lengthSquared != 0 else { return nil }
+        let sx = lengthSquared.squareRoot()
+        let sy = (matrix.a * matrix.d - matrix.b * matrix.c) / sx
+        let shear = (matrix.a * matrix.b + matrix.c * matrix.d) / lengthSquared
+        return (Radian(_unchecked: Scalar.atan2(matrix.c, matrix.a)), (sx, sy), shear)
     }
 
     @inlinable
-    public var rotationAngle: Angle::Radian<Scalar> {
-        Self.rotationAngle(self)
-    }
-}
-
-extension Linear.Matrix where Rows == 2, Columns == 2, Scalar: FloatingPoint {
-
-    @inlinable
-    public static func scaleFactors(_ matrix: Self) -> (x: Scalar, y: Scalar) {
-        let sx = (matrix.a * matrix.a + matrix.c * matrix.c).squareRoot()
-        let sy = (matrix.b * matrix.b + matrix.d * matrix.d).squareRoot()
-        return (sx, sy)
-    }
-
-    @inlinable
-    public var scaleFactors: (x: Scalar, y: Scalar) {
-        Self.scaleFactors(self)
+    public var decomposition: (rotation: Angle::Radian<Scalar>, scale: (x: Scalar, y: Scalar), shear: Scalar)? {
+        Self.decomposition(self)
     }
 }
 

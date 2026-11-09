@@ -11,12 +11,12 @@ Use this package when you do vector and matrix arithmetic inside a coordinate sp
   - `projection(onto:)` a zero vector is `.zero`, so `rejection(from:)` a zero vector returns the vector unchanged.
   - `angle(to:)` with a zero-length operand is zero radians.
   - The 2×2 `inverse` is `nil`, and `isInvertible` is false, exactly when the determinant is 0.
+  - The 2×2 `decomposition` is `nil` exactly when the first column is zero.
 - Every zero test is an exact comparison with no tolerance. A nearly singular matrix still inverts, and a tiny vector still normalizes.
 - `Linear.Matrix.rotation(_:)` is counterclockwise for positive angles (`a = cos`, `b = -sin`, `c = sin`, `d = cos`), and so is `rotated(by:)`.
   - `signedAngle(to:)` is positive counterclockwise, from `atan2(cross, dot)`.
   - `angle(to:)` is unsigned, from `acos`.
   - `angle` is `atan2(dy, dx)`.
-- `rotationAngle` reads only the first column (`atan2(c, a)`). `scaleFactors` are the lengths of the two columns. Both decompose a matrix correctly only when it is a rotation times an axis scale, with no shear.
 - `rotation(cos:sin:)` takes any two values without checking that they lie on the unit circle.
 - `map` visits each scalar exactly once, in index order (row by row for a matrix). It stops at the first thrown error and rethrows it with its own type. Empty shapes never call the transform.
 - A vector encodes as a flat array. Decoding throws unless the array has exactly N elements of the scalar type. A 2×2 matrix encodes as the keyed object `{"a","b","c","d"}`.
